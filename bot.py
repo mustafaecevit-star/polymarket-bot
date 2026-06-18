@@ -1,4 +1,7 @@
-import os
+ import telebot
+TOKEN = '8969386410:AAG1-VlFwjup rtyuYFJkoup7a0W2NHrGZeg'
+bot = telebot.TeleBot(TOKEN.replace(' ', ''))
+ import os
 import time
 import threading
 import http.server
