@@ -29,7 +29,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(b"Bot Aktif - Mükemmeliyet Protokolü Devrede")
+                self.wfile.write(b"Bot Aktif - Mukemmeliyet Protokolu Devrede")
+
 
 def start_web_server():
     with socketserver.TCPServer(("", PORT), Handler) as httpd:
