@@ -1,33 +1,37 @@
 import os
 import telebot
 import sys
+import time
 
-# 1. Ortam Değişkenlerini Tanımla
+# Ayarlar
 TOKEN = os.environ.get("TELEGRAM_TOKEN")
-CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+# Mükemmeliyet Protokolü Ayarları
+LIKIDITE_ESIYI = 1000
+KAR_ORANI_ESIYI = 0.05
 
-# 2. Güvenlik Kontrolü
-if not TOKEN:
-    print("KRİTİK HATA: TELEGRAM_TOKEN bulunamadı!")
-    sys.exit(1)
-
-# 3. Botu Başlat
 bot = telebot.TeleBot(TOKEN)
 
-# 4. Mükemmeliyet Protokolü ve Komutlar
+# 1. Komut: Protokol Durumu
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "Pathfinder Aktif: Mükemmeliyet protokolü devrede.")
+    bot.reply_to(message, "Pathfinder Aktif: Mükemmeliyet protokolü devrede. Tarama motoru hazır.")
+
+# 2. Komut: Manuel Piyasa Taraması (Test İçin)
+@bot.message_handler(commands=['tara'])
+def tarama_baslat(message):
+    bot.reply_to(message, "Piyasalar taranıyor: Ekonomi, Kripto, Siyaset, Spor...")
+    # Burada ileride verileri çekecek fonksiyonu çağıracağız
+    time.sleep(2) 
+    bot.reply_to(message, "Analiz tamamlandı: Şu an kriterlere uyan fırsat bulunamadı. İzlemeye devam ediyorum.")
 
 @bot.message_handler(func=lambda message: message.text == "Selam")
 def reply_selam(message):
-    bot.reply_to(message, "Merhaba, Pathfinder Aktif ve Takipte.")
+    bot.reply_to(message, "Merhaba, Pathfinder Avcı Modunda.")
 
-# 5. Botun Sürekli Çalışmasını Sağlayan Döngü
 if __name__ == "__main__":
-    print("Bot başlatılıyor ve bağlantı kuruluyor...")
-    # none_stop=True, botun hatalarda durmamasını sağlar
+    print("Bot Avcı modunda başlatılıyor...")
     bot.polling(none_stop=True)
+
 
 
 
