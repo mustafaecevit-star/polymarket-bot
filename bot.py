@@ -1,4 +1,3 @@
-
 import os
 import telebot
 import threading
@@ -41,9 +40,15 @@ if __name__ == "__main__":
     print("Bot Avcı modunda başlatılıyor...")
     
     # GÜVENLİK VE ÇAKIŞMA ÖNLEME:
-    # Eski bağlantı (webhook) varsa temizle ve polling'i başlat
+    # Eski tüm bağlantıları, webhookları ve bekleyen güncellemeleri temizle
     bot.remove_webhook()
+    try:
+        bot.delete_webhook(drop_pending_updates=True)
+    except:
+        pass
+    
     bot.infinity_polling(none_stop=True)
+
 
 
 
