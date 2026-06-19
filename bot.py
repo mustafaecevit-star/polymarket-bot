@@ -1,3 +1,4 @@
+
 import os
 import telebot
 import threading
@@ -21,7 +22,7 @@ bot = telebot.TeleBot(TOKEN)
 # 3. Komutlar
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "Pathfinder 'Avcı' Modunda. Mükemmeliyet protokolü devrede.")
+    bot.reply_to(message, "Pathfinder Aktif: Mükemmeliyet protokolü devrede.")
 
 @bot.message_handler(commands=['tara'])
 def tarama_baslat(message):
@@ -33,11 +34,15 @@ def reply_selam(message):
 
 # 4. Ana Çalıştırma
 if __name__ == "__main__":
+    # Flask sunucusunu arka planda başlat
     flask_thread = threading.Thread(target=run_flask)
     flask_thread.start()
     
     print("Bot Avcı modunda başlatılıyor...")
-    # 409 hatasını engellemek için infinity_polling kullanıyoruz
+    
+    # GÜVENLİK VE ÇAKIŞMA ÖNLEME:
+    # Eski bağlantı (webhook) varsa temizle ve polling'i başlat
+    bot.remove_webhook()
     bot.infinity_polling(none_stop=True)
 
 
