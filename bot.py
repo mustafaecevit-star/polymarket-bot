@@ -3,7 +3,7 @@ import telebot
 import threading
 from flask import Flask
 
-# 1. Flask ile Port Dinleyici (Render'ı kandırmak için)
+# 1. Flask ile Port Dinleyici
 app = Flask(__name__)
 
 @app.route('/')
@@ -25,8 +25,7 @@ def send_welcome(message):
 
 @bot.message_handler(commands=['tara'])
 def tarama_baslat(message):
-    # Bu kısım ileride verilerle dolacak
-    bot.reply_to(message, "Piyasalar taranıyor: Ekonomi, Kripto, Siyaset, Spor... Analiz tamamlandı: Şu an kriterlere uyan fırsat bulunamadı.")
+    bot.reply_to(message, "Piyasalar taranıyor: Analiz tamamlandı: Şu an kriterlere uyan fırsat bulunamadı.")
 
 @bot.message_handler(func=lambda message: message.text == "Selam")
 def reply_selam(message):
@@ -34,13 +33,13 @@ def reply_selam(message):
 
 # 4. Ana Çalıştırma
 if __name__ == "__main__":
-    # Flask'ı ayrı bir kanalda (thread) başlat
     flask_thread = threading.Thread(target=run_flask)
     flask_thread.start()
     
-    # Botu başlat
     print("Bot Avcı modunda başlatılıyor...")
-    bot.polling(none_stop=True)
+    # 409 hatasını engellemek için infinity_polling kullanıyoruz
+    bot.infinity_polling(none_stop=True)
+
 
 
 
