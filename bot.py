@@ -1,22 +1,34 @@
-import telebot
 import os
-import time
+import telebot
+import sys
 
-# Render'dan gelen anahtarlar
+# 1. Ortam Değişkenlerini Tanımla
 TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
+# 2. Güvenlik Kontrolü
+if not TOKEN:
+    print("KRİTİK HATA: TELEGRAM_TOKEN bulunamadı!")
+    sys.exit(1)
+
+# 3. Botu Başlat
 bot = telebot.TeleBot(TOKEN)
 
-# Başlangıç bildirimi
-try:
-    bot.send_message(CHAT_ID, "🔍 Pathfinder Aktif ve Takipte.")
-except Exception as e:
-    print(f"Mesaj gönderilemedi: {e}")
+# 4. Mükemmeliyet Protokolü ve Komutlar
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.reply_to(message, "Pathfinder Aktif: Mükemmeliyet protokolü devrede.")
 
-# Basit bir döngü yerine botu çalıştır
-print("Bot çalışıyor...")
-bot.infinity_polling()
+@bot.message_handler(func=lambda message: message.text == "Selam")
+def reply_selam(message):
+    bot.reply_to(message, "Merhaba, Pathfinder Aktif ve Takipte.")
+
+# 5. Botun Sürekli Çalışmasını Sağlayan Döngü
+if __name__ == "__main__":
+    print("Bot başlatılıyor ve bağlantı kuruluyor...")
+    # none_stop=True, botun hatalarda durmamasını sağlar
+    bot.polling(none_stop=True)
+
 
 
 
